@@ -1,45 +1,38 @@
-name: Build and Push Lambda ZIP
+name: Build and Push Lambda Zip
 
 on:
   push:
-    branches:
-      - main
-      
+    branches: [ main ]
+
 permissions:
   contents: write
 
 jobs:
-  build-and-push:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📥 Checkout Code
-        uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-      - name: 🐍 Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
 
-      - name: 🧪 Install dependencies
-        run: |
-          mkdir -p lambda_package
-          pip install -r requirements.txt -t lambda_package/
-          cp lambda_function.py lambda_package/
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt -t python
 
-      - name: 📦 Create ZIP
-        run: |
-          cd lambda_package
-          zip -r ../lambda-package.zip . \
-          -x "*.pyc" "*.pyo" "*__pycache__/*" "*tests/*" "*test/*" "*.dist-info/*" "*.egg-info/*" "*docs/*" "*examples/*"
-          cd ..
-          mkdir -p dist
-          mv lambda-package.zip dist/
+    - name: Copy Lambda function
+      run: cp lambda_function.py python/
 
+    - name: Zip Lambda package
+      run: cd python && zip -r ../lambda_package.zip .
 
-      - name: 🚀 Commit and Push ZIP
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "Add Lambda deployment ZIP"
-          branch: main
-          file_pattern: "dist/lambda-package.zip"
+    - name: Commit and push ZIP
+      uses: stefanzweifel/git-auto-commit-action@v5
+      with:
+        commit_message: "Add built Lambda package"
+        file_pattern: lambda_package.zip

@@ -33,7 +33,7 @@ jobs:
           mv lambda-package.zip dist/
 
       - name: 🚀 Commit and Push ZIP
-        uses: viveksinghmehta/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Add Lambda deployment ZIP"
           branch: main

@@ -3,6 +3,10 @@ import yfinance as yf
 
 app = Flask(__name__)
 
+@app.route("/")
+def home():
+    return jsonify({"message": "Welcome to the Stock API"}), 200
+
 @app.route("/stock/<symbol>", methods=["GET"])
 def get_stock_data(symbol):
     stock = yf.Ticker(symbol.upper())
@@ -34,5 +38,4 @@ def get_stock_data(symbol):
         "price_5y": price_5y,
     })
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=10000)
+# No need to call app.run() for gunicorn

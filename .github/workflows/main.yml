@@ -24,15 +24,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # Optional: Run a test script if you have one
       - name: ✅ Run tests
         run: |
           echo "No test step defined, skipping..."
 
-      # Optional: Upload a directory or file as artifact
       - name: 📤 Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: flask-api-code
           path: .
-        path: lambda_function.zip

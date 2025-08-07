@@ -1,6 +1,5 @@
-fastapi
-uvicorn
-yfinance
 Flask
+gunicorn
+yfinance
 pandas
 numpy

@@ -30,10 +30,12 @@ jobs:
       - name: 📦 Create ZIP
         run: |
           cd lambda_package
-          zip -r ../lambda-package.zip .
+          zip -r ../lambda-package.zip . \
+          -x "*.pyc" "*.pyo" "*__pycache__/*" "*tests/*" "*test/*" "*.dist-info/*" "*.egg-info/*" "*docs/*" "*examples/*"
           cd ..
           mkdir -p dist
           mv lambda-package.zip dist/
+
 
       - name: 🚀 Commit and Push ZIP
         uses: stefanzweifel/git-auto-commit-action@v5
